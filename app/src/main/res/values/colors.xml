@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#424242</color>
+    <color name="colorPrimaryDark">#424242</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+
+    <color name="yellow">#FFEB3B</color>
+    <color name="trnsp">#00000000</color>
+    <color name="grdup">#212121</color>
+    <color name="grdown">#757575</color>
+</resources>

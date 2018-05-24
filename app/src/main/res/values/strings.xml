@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Findr</string>
+    <string name="facebook_app_id"> 334074740451926</string>
+    <string name="title_activity_maps">Map</string>
+</resources>

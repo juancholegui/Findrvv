@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/open"
+    tools:context=".MainActivity"
+    >
+
+    <ViewFlipper
+        android:id="@+id/slider"
+        android:layout_width="283dp"
+        android:layout_height="277dp"
+        android:layout_above="@+id/title1"
+        android:layout_centerHorizontal="true">
+
+    </ViewFlipper>
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:text="Proximos Eventos"
+        android:textColor="@color/yellow"
+        android:textSize="25dp"
+        />
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu"
+        android:layout_width="158dp"
+        android:layout_height="449dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+
+        app:fab_addButtonColorNormal="@color/yellow"
+        app:fab_addButtonPlusIconColor="@color/grdup"
+        app:fab_labelStyle="@style/menu_style">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/pubut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_icon="@drawable/pub"
+            android:onClick="lookbr"
+
+
+            >
+
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mapbut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="maps"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_icon="@drawable/map"
+
+            >
+
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_icon="@drawable/profile"
+
+            >
+
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_icon="@drawable/group"
+
+            >
+
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+
+
+</RelativeLayout>
