@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.postc,
                 R.drawable.postd,
                 R.drawable.poste,
-                R.drawable.postg;
+                R.drawable.postg};
         viewFlipper = findViewById(R.id.slider);
 
         for (int i = 0; i < post.length; i++) {
@@ -72,4 +72,3 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-}
