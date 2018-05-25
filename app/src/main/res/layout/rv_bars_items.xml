@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="match_parent"
-    android:layout_margin="10dp"
-    >
+    android:weightSum="10"
+    android:layout_margin="10dp">
 <LinearLayout
     android:padding="10dp"
-    android:weightSum="10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/open">
@@ -16,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_weight="4"
         android:layout_height="128dp"
-android:src="@drawable/picbr"
+        android:src="@drawable/picbr"
         android:scaleType="centerCrop"
         />
 
