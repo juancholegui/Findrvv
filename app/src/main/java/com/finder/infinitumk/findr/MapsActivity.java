@@ -2,8 +2,10 @@ package com.finder.infinitumk.findr;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -12,12 +14,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String TAG = "MapsActivity";
 
     private GoogleMap mMap;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +39,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 
         if(status== ConnectionResult.SUCCESS){
-
 
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -46,6 +56,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+   private void documents() {
+       db.collection("bars").document("bogota").collection("about")
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if (task.isSuccessful()) {
+                           for (QueryDocumentSnapshot document : task.getResult()) {
+                               Log.d(TAG, document.getId() + " => " + document.getData());
+                           }
+                       } else {
+                           Log.d(TAG, "Error getting documents: ", task.getException());
+                       }
+                   }
+               });
+   }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -56,21 +83,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onMapReady(GoogleMap map) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(41.889, -87.622), 16));
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        UiSettings uiSettings=mMap.getUiSettings();
-        uiSettings.setMapToolbarEnabled(true);
-        uiSettings.setZoomControlsEnabled(true);
-
-
-        LatLng pub = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(pub).title("hear is DORA'S PUB"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(pub));
-        float zoomlevel=8;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pub,zoomlevel));
-
+        // You can customize the marker image using images bundled with
+        // your app, or dynamically generated bitmaps.
+        map.addMarker(new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.house_flag))
+                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                .position(new LatLng(41.889, -87.622)));
     }
 }
