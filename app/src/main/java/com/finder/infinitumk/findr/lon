@@ -1,0 +1,18 @@
+package com.finder.infinitumk.findr;
+
+public class lon {
+
+    private long lon;
+
+    public lon(long lon) {
+        this.lon = lon;
+    }
+
+    public long getLon() {
+        return lon;
+    }
+
+    public void setLon(long lon) {
+        this.lon = lon;
+    }
+}
