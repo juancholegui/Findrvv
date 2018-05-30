@@ -1,0 +1,18 @@
+package com.finder.infinitumk.findr;
+
+public class lat {
+
+    private long lat;
+
+    public lat(long lat) {
+        this.lat = lat;
+    }
+
+    public long getLat() {
+        return lat;
+    }
+
+    public void setLat(long lat) {
+        this.lat = lat;
+    }
+}
