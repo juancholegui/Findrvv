@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -18,8 +19,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +61,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-   private void documents() {
-       db.collection("bars").document("bogota").collection("about")
-               .get()
-               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+   public int lat() {
+
+               DocumentReference docRef = db.collection("cities/bogota/about").document();
+               docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                    @Override
-                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                       if (task.isSuccessful()) {
-                           for (QueryDocumentSnapshot document : task.getResult()) {
-                               Log.d(TAG, document.getId() + " => " + document.getData());
-                           }
-                       } else {
-                           Log.d(TAG, "Error getting documents: ", task.getException());
-                       }
+                   public void onSuccess(DocumentSnapshot documentSnapshot) {
+                       lat latitud = documentSnapshot.toObject(lat.class);
                    }
                });
    }
+
+    public int lon() {
+
+        DocumentReference docRef = db.collection("cities/bogota/about").document();
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                lon longitude = documentSnapshot.toObject(lon.class);
+            }
+        });
+    }
 
     /**
      * Manipulates the map once available.
@@ -92,6 +102,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         map.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.house_flag))
                 .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                .position(new LatLng(41.889, -87.622)));
+                .position(new LatLng(lat(),lon()));
     }
 }
