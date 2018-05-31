@@ -22,9 +22,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,7 +36,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
-
-
+            
 
         } else {
 
@@ -58,30 +59,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dialog.show();
 
         }
+        
+        longi();
     }
 
+    /* extract the info from firestore
+     */
 
-   public int lat() {
+    public void longi(){
 
-               DocumentReference docRef = db.collection("cities/bogota/about").document();
-               docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                   @Override
-                   public void onSuccess(DocumentSnapshot documentSnapshot) {
-                       lat latitud = documentSnapshot.toObject(lat.class);
-                   }
-               });
-   }
+        db.collection("bars").document("bogota").collection("about")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
 
-    public int lon() {
-
-        DocumentReference docRef = db.collection("cities/bogota/about").document();
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                lon longitude = documentSnapshot.toObject(lon.class);
-            }
-        });
+                                String  latitud =  document.getData().get("lat").toString();
+                                String  longitud   =  document.getData().get("long").toString();
+                                String isEnablelocation = document.getData().get("Enable Location").toString();
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
+
 
     /**
      * Manipulates the map once available.
@@ -94,6 +100,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap map) {
+
+        
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(41.889, -87.622), 16));
 
@@ -102,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         map.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.house_flag))
                 .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                .position(new LatLng(lat(),lon()));
+                .position(new LatLng(1,1)));
     }
 }
+
